@@ -7,24 +7,6 @@ from PIL import Image
 file_extension = ["jpg", "bmp", "png"]
 replace_color = [0,0,0,0]
 
-def listAllFiles():
-  filenames = []
-  for root, dirs, files in os.walk("."):
-    for dir in dirs:
-      for root, dirs, files in os.walk(dir):
-        for filename in files:
-          filenames.append(dir+'/'+filename)
-  return filenames
-
-def listAllDirectory(sourceDirectoryName):
-  dirss = []
-  for root, dirs, files in os.walk(sourceDirectoryName):
-    return dirs
-
-def deleteDirectory(path):
-  if os.path.exists(path) and os.path.isdir(path):
-    shutil.rmtree(path)
-
 def replaceColor(img, targetColor, newColor):
   data = np.array(img)
   rgb = data[:,:,:3]
@@ -62,8 +44,8 @@ def saveFourGrayscaleColor(img,path):
 for root, dirss, files in os.walk(".."):
   for filename in files:
     extension = filename.split(".")[-1]
-    if (extension == "bmp" or extension == "jpg" or extension == "png"):
-      print(filename)
-      img = Image.open(filename)
-      mordifiedImg = getFourGrayscaleColor(img)
-      mordifiedImg.save(filename.split(".")[0] + "_modified" + "." + extension)
+    for ext in file_extension:
+      if (filename.endswith("."+ext)):
+        img = Image.open(filename)
+        mordifiedImg = getFourGrayscaleColor(img)
+        mordifiedImg.save(filename.split(".")[0] + "_modified" + "." + extension)
