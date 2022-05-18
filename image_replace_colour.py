@@ -1,8 +1,18 @@
 import os
 import shutil
-import sys
 import numpy as np
 from PIL import Image
+
+# Replace colour program in python
+
+# Prerequisite:
+# pip install numpy
+# pip install Pillow
+
+# Description
+# The sample project provide you an example to change specfic colours into new colours of images.
+# Please put images in root directory.
+
 
 file_extension = ["jpg", "bmp", "png"]
 replace_color = [0,0,0,0]
@@ -31,21 +41,15 @@ def saveFourGrayscaleColor(img,path):
       getFourGrayscaleColor(img).save(path.replace("."+ext,'.bmp'))
       break
 
-# Replace colour program in python
+if (os.path.isdir("output")):
+  shutil.rmtree("output")
+os.mkdir("output")
 
-# Prerequisite:
-# pip install numpy
-# pip install Pillow
-
-# Description
-# The sample project provide you an example to change specfic colours into new colours of images.
-# Please put images in root directory.
-
-for root, dirss, files in os.walk(".."):
-  for filename in files:
-    extension = filename.split(".")[-1]
+for entry in os.scandir('.'):
+  if entry.is_file():
+    filename = entry.name
     for ext in file_extension:
       if (filename.endswith("."+ext)):
         img = Image.open(filename)
-        mordifiedImg = getFourGrayscaleColor(img)
-        mordifiedImg.save(filename.split(".")[0] + "_modified" + "." + extension)
+        img = getFourGrayscaleColor(img)
+        img.save("output/" + filename.split(".")[0] + "." + ext)
